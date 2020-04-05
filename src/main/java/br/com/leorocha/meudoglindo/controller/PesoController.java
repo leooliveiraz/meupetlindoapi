@@ -54,4 +54,12 @@ public class PesoController {
 		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem())));
 		return dtos; 
 	}
+	
+	@GetMapping("/animal/{idAnimal}")
+	public List<PesoDTO> listarAnimal(@PathVariable Integer idAnimal) {
+		List<Peso> lista = service.listarPorAnimal(idAnimal);
+		List<PesoDTO> dtos = new ArrayList<PesoDTO>();
+		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem())));
+		return dtos; 
+	}
 }

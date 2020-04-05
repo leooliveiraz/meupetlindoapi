@@ -28,7 +28,7 @@ public class AnimalController {
 		service.salvar(animal);
 	}
 	@PutMapping
-	public void atualizar(Animal animal) {
+	public void atualizar( @RequestBody Animal animal) {
 		service.atualizar(animal);
 	}
 

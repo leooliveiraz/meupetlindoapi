@@ -34,10 +34,13 @@ public class PesoService {
 	}
 	
 	public List<Peso> listar() {
-		return (List<Peso>) repository.findAll();
+		return (List<Peso>) repository.findAllByOrderByDataPesagemAsc();
 	}
 	
 	public void delete(Integer id) {
 		repository.deleteById(id);
+	}
+	public List<Peso> listarPorAnimal(Integer idAnimal) {
+		return (List<Peso>) repository.findByAnimalIdOrderByDataPesagemAsc(idAnimal);
 	}
 }
