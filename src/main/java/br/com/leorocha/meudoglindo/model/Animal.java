@@ -23,6 +23,7 @@ public class Animal {
 	@NotNull
 	private String nome;
 	private LocalDate dataNascimento;
+	private LocalDate dataObito;
 
 	
 }

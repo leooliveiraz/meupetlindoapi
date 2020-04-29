@@ -24,7 +24,7 @@ public class AnimalController {
 	
 	@PostMapping
 	public void salvar(@RequestBody AnimalDTO dto ) {
-		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento());
+		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(),dto.getDataObito());
 		service.salvar(animal);
 	}
 	@PutMapping

@@ -8,5 +8,6 @@ import lombok.Data;
 public class AnimalDTO {
 	private Integer id;
 	private String nome;
-	private LocalDate dataNascimento;	
+	private LocalDate dataNascimento;
+	private LocalDate dataObito;	
 }
