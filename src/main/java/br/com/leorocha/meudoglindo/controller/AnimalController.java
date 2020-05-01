@@ -2,6 +2,8 @@ package br.com.leorocha.meudoglindo.controller;
 
 import java.util.List;
 
+import javax.security.sasl.AuthenticationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +24,15 @@ public class AnimalController {
 	@Autowired
 	private AnimalService service; 
 	
+	
 	@PostMapping
-	public void salvar(@RequestBody AnimalDTO dto ) {
-		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(),dto.getDataObito());
+	public void salvar(@RequestBody AnimalDTO dto) {
+		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(),dto.getDataObito(), null);
 		service.salvar(animal);
 	}
 	@PutMapping
-	public void atualizar( @RequestBody Animal animal) {
-		service.atualizar(animal);
+	public void atualizar( @RequestBody AnimalDTO animalDTO) throws AuthenticationException {	
+		service.atualizar(animalDTO);
 	}
 
 	@GetMapping("/{id}")
@@ -44,6 +47,6 @@ public class AnimalController {
 	
 	@GetMapping()
 	public List<Animal> listar() {
-		return service.listar();
+		return service.listarPorUsuarioId();
 	}
 }

@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -24,6 +26,10 @@ public class Animal {
 	private String nome;
 	private LocalDate dataNascimento;
 	private LocalDate dataObito;
+
+	@ManyToOne
+	@JoinColumn(name = "usuario")
+	private Usuario usuario;
 
 	
 }
