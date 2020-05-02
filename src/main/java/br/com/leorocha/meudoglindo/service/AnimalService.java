@@ -38,7 +38,8 @@ public class AnimalService {
 		repository.save(animal);
 	}
 	public Animal buscar(Integer id) {
-		return repository.findById(id).orElse(null);
+		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
+		return repository.findByIdAndUsuarioId(id,usuario.getId()).orElse(null);
 	}
 	public List<Animal> listar() {
 		return (List<Animal>) repository.findAll();
