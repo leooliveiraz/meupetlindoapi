@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.leorocha.meudoglindo.dto.AnimalDTO;
 import br.com.leorocha.meudoglindo.model.Animal;
+import br.com.leorocha.meudoglindo.model.Peso;
 import br.com.leorocha.meudoglindo.model.Usuario;
 import br.com.leorocha.meudoglindo.repository.AnimalRepository;
 
@@ -20,6 +21,8 @@ public class AnimalService {
 	private RequestService requestService;
 	@Autowired
 	private UsuarioService usuarioService;
+	@Autowired
+	private PesoService pesoService;
 	
 	public void salvar(Animal animal) {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
@@ -48,7 +51,14 @@ public class AnimalService {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
 		return repository.findByUsuarioId(usuario.getId());
 	}
-	public void delete(Integer id) {
-		repository.deleteById(id);
+	public void delete(Integer id) throws AuthenticationException {
+		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
+		Animal animal = buscar(id);
+		if(animal.getUsuario().getId() != usuario.getId()) {
+			throw new AuthenticationException("Você não pode excluir esse registro");
+		}
+		List<Peso> listaPeso = this.pesoService.listarPorAnimal(animal.getId());
+		this.pesoService.deletarLista(listaPeso);
+		repository.deleteById(id); 
 	}
 }

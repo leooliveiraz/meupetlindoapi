@@ -3,6 +3,8 @@ package br.com.leorocha.meudoglindo.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.sasl.AuthenticationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +26,11 @@ public class PesoController {
 	private PesoService service; 
 	
 	@PostMapping
-	public void salvar(@RequestBody PesoDTO dto ) {
+	public void salvar(@RequestBody PesoDTO dto ) throws AuthenticationException {
 		service.salvar(dto);
 	}
 	@PutMapping
-	public void atualizar(PesoDTO dto) {
+	public void atualizar(PesoDTO dto) throws AuthenticationException {
 		service.atualizar(dto);
 	}
 
@@ -45,14 +47,6 @@ public class PesoController {
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Integer id) {
 		service.delete(id);
-	}
-	
-	@GetMapping()
-	public List<PesoDTO> listar() {
-		List<Peso> lista = service.listar();
-		List<PesoDTO> dtos = new ArrayList<PesoDTO>();
-		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem())));
-		return dtos; 
 	}
 	
 	@GetMapping("/animal/{idAnimal}")

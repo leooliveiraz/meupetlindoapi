@@ -41,7 +41,7 @@ public class AnimalController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Integer id) {
+	public void delete(@PathVariable Integer id) throws AuthenticationException {
 		service.delete(id);
 	}
 	
