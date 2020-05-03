@@ -50,25 +50,28 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
     	token = token.replace("Bearer ", "");
     	try {
     		if(this.tokenService.tokenEncontrada(token)) {
-    			Boolean tokenValido = validatingToken(token);
-    			return tokenValido;
+    			return true;
     		} else {
-    			Boolean tokenValido = validatingToken(token);
+    			DecodedJWT jwt = JWT.decode(token);    	    
+    			byte[] decodedBytes = Base64.getDecoder().decode(jwt.getPayload());
+    			String decodedString = new String(decodedBytes);
+    			UserDTO dto = new Gson().fromJson(decodedString, UserDTO.class);
+    			Boolean tokenValido = validatingTokenInGoogle(token);
     			if(tokenValido) {
-    				DecodedJWT jwt = JWT.decode(token);    	    
-    	    	    byte[] decodedBytes = Base64.getDecoder().decode(jwt.getPayload());
-    	    	    String decodedString = new String(decodedBytes);
-    	    	    UserDTO dto = new Gson().fromJson(decodedString, UserDTO.class);
     	    	    if(!usuarioService.usuarioExiste(dto.getSub())) {
     	    	    	Usuario usuario = new Usuario(dto);
     	    	    	usuarioService.salvar(usuario);
     	    	    }
     	    	    this.tokenService.adicionar(token, dto);
+    	    	    return true;
     			} else {
+    	    	    if(usuarioService.usuarioExiste(dto.getSub())) {
+        	    	    this.tokenService.adicionar(token, dto);
+    	    	    	return true;
+    	    	    }
     				return false;
     			}
     		}
-    	    return true;
     	} catch (JWTDecodeException exception){
     	    //Invalid token
     		exception.printStackTrace();
@@ -76,7 +79,7 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
     	}
     }
     
-    private Boolean validatingToken(String token) {
+    private Boolean validatingTokenInGoogle(String token) {
     	try {
     		String response = restService.get("https://oauth2.googleapis.com/tokeninfo?id_token="+token);
     		return response != null ? true : false;    	
@@ -84,7 +87,6 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return false;
-			// TODO: handle exception
 		}
     }
     
