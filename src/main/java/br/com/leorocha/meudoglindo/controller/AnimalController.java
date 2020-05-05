@@ -1,5 +1,6 @@
 package br.com.leorocha.meudoglindo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
@@ -26,9 +27,10 @@ public class AnimalController {
 	
 	
 	@PostMapping
-	public void salvar(@RequestBody AnimalDTO dto) {
-		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(),dto.getDataObito(), null);
+	public Integer salvar(@RequestBody AnimalDTO dto) {
+		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(),dto.getDataObito(), null,null);
 		service.salvar(animal);
+		return animal.getId(); 
 	}
 	@PutMapping
 	public void atualizar( @RequestBody AnimalDTO animalDTO) throws AuthenticationException {	
@@ -36,8 +38,10 @@ public class AnimalController {
 	}
 
 	@GetMapping("/{id}")
-	public Animal buscar(@PathVariable Integer id) {
-		return service.buscar(id);
+	public AnimalDTO buscar(@PathVariable Integer id) {
+		Animal animal = service.buscar(id);
+		AnimalDTO dto = new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null);
+		return dto;
 	}
 	
 	@DeleteMapping("/{id}")
@@ -46,7 +50,15 @@ public class AnimalController {
 	}
 	
 	@GetMapping()
-	public List<Animal> listar() {
-		return service.listarPorUsuarioId();
+	public List<AnimalDTO> listar() {
+		List<AnimalDTO> listaDTO = new ArrayList<AnimalDTO>();
+		List<Animal> listAnimal = service.listarPorUsuarioId();
+		listAnimal.forEach(animal -> {listaDTO.add(new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null));});
+		return listaDTO;
+	}
+
+	@PutMapping("/uploadImagem/{id}")
+	public void uploadImagem( @PathVariable Integer id, @RequestBody String imagem) throws AuthenticationException {	
+		service.uploadImagem(id, imagem );
 	}
 }

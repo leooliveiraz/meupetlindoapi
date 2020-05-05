@@ -1,6 +1,5 @@
 package br.com.leorocha.meudoglindo.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -40,7 +39,6 @@ public class TokenService {
 	public void removerTokenVencida() {
 		ZoneId zoneId = ZoneId.systemDefault();
 		int nowEpoch =   Integer.parseInt(LocalDateTime.now().atZone(zoneId).toEpochSecond()+"");
-		System.out.println(LocalDate.now().toEpochDay());
 		Set<String> tokenList = this.tokens.keySet();
 		for(String _token : tokenList) {
 			UserDTO user = this.tokens.get(_token);

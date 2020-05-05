@@ -32,63 +32,66 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 	private TokenService tokenService;
 	@Autowired
 	private UsuarioService usuarioService;
-	
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    	System.out.println(request.getRequestURI());
-    	String authorization = request.getHeader("Authorization");
-    	boolean autenticado = this.autenticar(authorization);
-    	if(!autenticado) {
-    		throw new AuthenticationException("Autenticação Inválida");
-    	}
-        
-        //continue filtering
-        filterChain.doFilter(request, response);
-    }
-    
-    private Boolean autenticar(String token) {
-    	token = token.replace("Bearer ", "");
-    	try {
-    		if(this.tokenService.tokenEncontrada(token)) {
-    			return true;
-    		} else {
-    			DecodedJWT jwt = JWT.decode(token);    	    
-    			byte[] decodedBytes = Base64.getDecoder().decode(jwt.getPayload());
-    			String decodedString = new String(decodedBytes);
-    			UserDTO dto = new Gson().fromJson(decodedString, UserDTO.class);
-    			Boolean tokenValido = validatingTokenInGoogle(token);
-    			if(tokenValido) {
-    	    	    if(!usuarioService.usuarioExiste(dto.getSub())) {
-    	    	    	Usuario usuario = new Usuario(dto);
-    	    	    	usuarioService.salvar(usuario);
-    	    	    }
-    	    	    this.tokenService.adicionar(token, dto);
-    	    	    return true;
-    			} else {
-    	    	    if(usuarioService.usuarioExiste(dto.getSub())) {
-        	    	    this.tokenService.adicionar(token, dto);
-    	    	    	return true;
-    	    	    }
-    				return false;
-    			}
-    		}
-    	} catch (JWTDecodeException exception){
-    	    //Invalid token
-    		exception.printStackTrace();
-    		return false;
-    	}
-    }
-    
-    private Boolean validatingTokenInGoogle(String token) {
-    	try {
-    		String response = restService.get("https://oauth2.googleapis.com/tokeninfo?id_token="+token);
-    		return response != null ? true : false;    	
-		
+
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		String uri = request.getRequestURI();
+
+		if(!uri.startsWith("/arquivo/")) {
+			String authorization = request.getHeader("Authorization");
+			boolean autenticado = this.autenticar(authorization);
+			if(!autenticado) {
+				throw new AuthenticationException("Autenticação Inválida");
+			}
+		}
+
+		//continue filtering
+		filterChain.doFilter(request, response);
+	}
+
+	private Boolean autenticar(String token) {
+		token = token.replace("Bearer ", "");
+		try {
+			if(this.tokenService.tokenEncontrada(token)) {
+				return true;
+			} else {
+				DecodedJWT jwt = JWT.decode(token);    	    
+				byte[] decodedBytes = Base64.getDecoder().decode(jwt.getPayload());
+				String decodedString = new String(decodedBytes);
+				UserDTO dto = new Gson().fromJson(decodedString, UserDTO.class);
+				Boolean tokenValido = validatingTokenInGoogle(token);
+				if(tokenValido) {
+					if(!usuarioService.usuarioExiste(dto.getSub())) {
+						Usuario usuario = new Usuario(dto);
+						usuarioService.salvar(usuario);
+					}
+					this.tokenService.adicionar(token, dto);
+					return true;
+				} else {
+					if(usuarioService.usuarioExiste(dto.getSub())) {
+						this.tokenService.adicionar(token, dto);
+						return true;
+					}
+					return false;
+				}
+			}
+		} catch (JWTDecodeException exception){
+			//Invalid token
+			exception.printStackTrace();
+			return false;
+		}
+	}
+
+	private Boolean validatingTokenInGoogle(String token) {
+		try {
+			String response = restService.get("https://oauth2.googleapis.com/tokeninfo?id_token="+token);
+			return response != null ? true : false;    	
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return false;
 		}
-    }
-    
-    
+	}
+
+
 }
