@@ -10,7 +10,7 @@ import br.com.leorocha.meudoglindo.model.Animal;
 @Repository
 public interface AnimalRepository extends CrudRepository<Animal, Integer> {
 
-	List<Animal> findByUsuarioId(Integer id);
+	List<Animal> findByUsuarioIdOrderByNome(Integer id);
 	
 	Optional<Animal> findByIdAndUsuarioId(Integer idAnimal, Integer idUsuario);
 	

@@ -53,7 +53,7 @@ public class AnimalService {
 	}
 	public List<Animal> listarPorUsuarioId() {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		return repository.findByUsuarioId(usuario.getId());
+		return repository.findByUsuarioIdOrderByNome(usuario.getId());
 	}
 	public void delete(Integer id) throws AuthenticationException {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
