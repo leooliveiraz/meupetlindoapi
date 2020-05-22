@@ -19,14 +19,11 @@ import com.google.gson.JsonObject;
 
 import br.com.leorocha.meudoglindo.dto.SubscriptionDTO;
 import br.com.leorocha.meudoglindo.service.RestService;
-import br.com.leorocha.meudoglindo.service.ServerKeys;
 
 
 @RestController
 @RequestMapping(path="/web-push")
 public class WebPushController {
-	@Autowired
-	private ServerKeys serverKeys;	
 	@Autowired
 	private RestService restService;
 	
