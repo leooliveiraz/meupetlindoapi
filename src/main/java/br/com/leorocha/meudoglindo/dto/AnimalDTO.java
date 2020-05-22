@@ -13,6 +13,7 @@ public class AnimalDTO {
 	private Integer id;
 	private String nome;
 	private LocalDate dataNascimento;
+	private LocalDate dataAdocao;
 	private LocalDate dataObito;	
 	private String idArquivo;
 }

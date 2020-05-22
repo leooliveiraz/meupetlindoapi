@@ -28,7 +28,7 @@ public class AnimalController {
 	
 	@PostMapping
 	public Integer salvar(@RequestBody AnimalDTO dto) {
-		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(),dto.getDataObito(), null,null);
+		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(), dto.getDataAdocao(), dto.getDataObito(), null,null);
 		service.salvar(animal);
 		return animal.getId(); 
 	}
@@ -40,7 +40,7 @@ public class AnimalController {
 	@GetMapping("/{id}")
 	public AnimalDTO buscar(@PathVariable Integer id) {
 		Animal animal = service.buscar(id);
-		AnimalDTO dto = new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null);
+		AnimalDTO dto = new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataAdocao(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null);
 		return dto;
 	}
 	
@@ -53,7 +53,9 @@ public class AnimalController {
 	public List<AnimalDTO> listar() {
 		List<AnimalDTO> listaDTO = new ArrayList<AnimalDTO>();
 		List<Animal> listAnimal = service.listarPorUsuarioId();
-		listAnimal.forEach(animal -> {listaDTO.add(new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null));});
+		listAnimal.forEach(animal -> {
+				listaDTO.add(new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataAdocao(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null));
+		});
 		return listaDTO;
 	}
 

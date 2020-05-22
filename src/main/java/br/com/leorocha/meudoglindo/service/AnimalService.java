@@ -40,6 +40,7 @@ public class AnimalService {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
 		animal.setDataNascimento(animalDTO.getDataNascimento());
+		animal.setDataAdocao(animalDTO.getDataAdocao());
 		animal.setDataObito(animalDTO.getDataObito());
 		animal.setNome(animalDTO.getNome());
 		repository.save(animal);
