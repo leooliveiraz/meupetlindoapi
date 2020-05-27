@@ -13,4 +13,6 @@ public interface VacinaRepository extends CrudRepository<Vacina, Integer> {
 	Optional<Vacina> findByIdAndAnimalUsuarioId(Integer idPeso, Integer idUsuario);
 	
 	List<Vacina> findByAnimalIdAndAnimalUsuarioIdOrderByDataVacinaDesc(Integer idAnimal, Integer id);
+
+	List<Vacina> findByAnimalUsuarioIdOrderByDataVacinaDesc(Integer id);
 }

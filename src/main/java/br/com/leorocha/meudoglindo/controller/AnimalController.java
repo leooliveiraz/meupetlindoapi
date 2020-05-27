@@ -24,13 +24,18 @@ import br.com.leorocha.meudoglindo.service.AnimalService;
 public class AnimalController {
 	@Autowired
 	private AnimalService service; 
-	
-	
+
+
 	@PostMapping
-	public Integer salvar(@RequestBody AnimalDTO dto) {
-		Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(), dto.getDataAdocao(), dto.getDataObito(), null,null);
-		service.salvar(animal);
-		return animal.getId(); 
+	public Integer salvar(@RequestBody AnimalDTO dto) throws AuthenticationException {
+		if(dto.getId() != null) {
+			service.atualizar(dto);
+			return dto.getId();
+		} else {
+			Animal animal = new Animal(null, dto.getNome(), dto.getDataNascimento(), dto.getDataAdocao(), dto.getDataObito(), null,null);
+			service.salvar(animal);
+			return animal.getId(); 
+		}
 	}
 	@PutMapping
 	public void atualizar( @RequestBody AnimalDTO animalDTO) throws AuthenticationException {	
@@ -43,18 +48,18 @@ public class AnimalController {
 		AnimalDTO dto = new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataAdocao(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null);
 		return dto;
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Integer id) throws AuthenticationException {
 		service.delete(id);
 	}
-	
+
 	@GetMapping()
 	public List<AnimalDTO> listar() {
 		List<AnimalDTO> listaDTO = new ArrayList<AnimalDTO>();
 		List<Animal> listAnimal = service.listarPorUsuarioId();
 		listAnimal.forEach(animal -> {
-				listaDTO.add(new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataAdocao(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null));
+			listaDTO.add(new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataAdocao(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null));
 		});
 		return listaDTO;
 	}

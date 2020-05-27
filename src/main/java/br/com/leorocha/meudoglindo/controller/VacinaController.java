@@ -48,10 +48,17 @@ public class VacinaController {
 	public void delete(@PathVariable Integer id) {
 		service.delete(id);
 	}
-	
+
 	@GetMapping("/animal/{idAnimal}")
 	public List<VacinaDTO> listarAnimal(@PathVariable Integer idAnimal) {
 		List<Vacina> lista = service.listarPorAnimal(idAnimal);
+		List<VacinaDTO> dtos = new ArrayList<VacinaDTO>();
+		lista.forEach(vacina -> dtos.add(new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina())));
+		return dtos; 
+	}
+	@GetMapping
+	public List<VacinaDTO> listar() {
+		List<Vacina> lista = service.listarPorUsuario();
 		List<VacinaDTO> dtos = new ArrayList<VacinaDTO>();
 		lista.forEach(vacina -> dtos.add(new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina())));
 		return dtos; 

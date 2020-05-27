@@ -61,4 +61,8 @@ public class VermifugoService {
 		this.repository.deleteAll(listaVermifugo);
 		
 	}
+	public List<Vermifugo> listarPorUsuario() {
+		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
+		return (List<Vermifugo>) repository.findByAnimalUsuarioIdOrderByDataVermifugoDesc( usuario.getId());
+	}
 }

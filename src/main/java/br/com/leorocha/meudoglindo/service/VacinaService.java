@@ -61,4 +61,8 @@ public class VacinaService {
 		this.repository.deleteAll(listaVacina);
 		
 	}
+	public List<Vacina> listarPorUsuario() {
+		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
+		return (List<Vacina>) repository.findByAnimalUsuarioIdOrderByDataVacinaDesc(usuario.getId());
+	}
 }

@@ -17,4 +17,6 @@ public interface PesoRepository extends CrudRepository<Peso, Integer> {
 	List<Peso> findByAnimalIdOrderByDataPesagemAsc(Integer idAnimal);
 
 	List<Peso> findByAnimalIdAndAnimalUsuarioIdOrderByDataPesagemAsc(Integer idAnimal, Integer id);
+
+	List<Peso> findByAnimalUsuarioIdOrderByDataPesagemAsc(Integer id);
 }

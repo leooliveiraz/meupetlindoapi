@@ -24,7 +24,7 @@ import br.com.leorocha.meudoglindo.service.VermifugoService;
 public class VermifugoController {
 	@Autowired
 	private VermifugoService service; 
-	
+
 	@PostMapping
 	public void salvar(@RequestBody VermifugoDTO dto ) throws AuthenticationException {
 		service.salvar(dto);
@@ -43,15 +43,23 @@ public class VermifugoController {
 			return null;
 		}
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Integer id) {
 		service.delete(id);
 	}
-	
+
 	@GetMapping("/animal/{idAnimal}")
 	public List<VermifugoDTO> listarAnimal(@PathVariable Integer idAnimal) {
 		List<Vermifugo> lista = service.listarPorAnimal(idAnimal);
+		List<VermifugoDTO> dtos = new ArrayList<VermifugoDTO>();
+		lista.forEach(vermifugo -> dtos.add(new VermifugoDTO(vermifugo.getId(), vermifugo.getAnimal().getId(), vermifugo.getNome(), vermifugo.getDataVermifugo(), vermifugo.getDataProximoVermifugo())));
+		return dtos; 
+	}
+
+	@GetMapping
+	public List<VermifugoDTO> listar() {
+		List<Vermifugo> lista = service.listarPorUsuario();
 		List<VermifugoDTO> dtos = new ArrayList<VermifugoDTO>();
 		lista.forEach(vermifugo -> dtos.add(new VermifugoDTO(vermifugo.getId(), vermifugo.getAnimal().getId(), vermifugo.getNome(), vermifugo.getDataVermifugo(), vermifugo.getDataProximoVermifugo())));
 		return dtos; 

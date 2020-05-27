@@ -48,10 +48,18 @@ public class PesoController {
 	public void delete(@PathVariable Integer id) {
 		service.delete(id);
 	}
-	
+
 	@GetMapping("/animal/{idAnimal}")
 	public List<PesoDTO> listarAnimal(@PathVariable Integer idAnimal) {
 		List<Peso> lista = service.listarPorAnimal(idAnimal);
+		List<PesoDTO> dtos = new ArrayList<PesoDTO>();
+		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem())));
+		return dtos; 
+	}
+
+	@GetMapping("")
+	public List<PesoDTO> listar() {
+		List<Peso> lista = service.listarPorUsuario();
 		List<PesoDTO> dtos = new ArrayList<PesoDTO>();
 		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem())));
 		return dtos; 

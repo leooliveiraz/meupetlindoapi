@@ -64,4 +64,8 @@ public class PesoService {
 		this.repository.deleteAll(listaPeso);
 		
 	}
+	public List<Peso> listarPorUsuario() {
+		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
+		return (List<Peso>) repository.findByAnimalUsuarioIdOrderByDataPesagemAsc(usuario.getId());
+	}
 }
