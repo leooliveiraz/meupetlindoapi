@@ -26,8 +26,9 @@ public class PesoController {
 	private PesoService service; 
 	
 	@PostMapping
-	public void salvar(@RequestBody PesoDTO dto ) throws AuthenticationException {
+	public String salvar(@RequestBody PesoDTO dto ) throws AuthenticationException {
 		service.salvar(dto);
+		return "ok";
 	}
 	@PutMapping
 	public void atualizar(PesoDTO dto) throws AuthenticationException {
