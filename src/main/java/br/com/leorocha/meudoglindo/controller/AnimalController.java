@@ -49,8 +49,8 @@ public class AnimalController {
 		return dto;
 	}
 	
-	@GetMapping("")
-	public List<AnimalDTO> listar(@PathVariable Integer id) {
+	@GetMapping("/tudo")
+	public List<AnimalDTO> listarTudo(@PathVariable Integer id) {
 		List<Animal> animais = service.listar();
 		List<AnimalDTO> dtos = new ArrayList<AnimalDTO>();
 		animais.forEach(animal ->{
