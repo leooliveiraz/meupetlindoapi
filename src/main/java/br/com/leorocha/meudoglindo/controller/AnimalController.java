@@ -48,6 +48,17 @@ public class AnimalController {
 		AnimalDTO dto = new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataAdocao(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null);
 		return dto;
 	}
+	
+	@GetMapping("")
+	public List<AnimalDTO> listar(@PathVariable Integer id) {
+		List<Animal> animais = service.listar();
+		List<AnimalDTO> dtos = new ArrayList<AnimalDTO>();
+		animais.forEach(animal ->{
+			AnimalDTO dto = new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataAdocao(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null);
+			dtos.add(dto);
+		});
+		return dtos;
+	}
 
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Integer id) throws AuthenticationException {
