@@ -20,7 +20,7 @@ import br.com.leorocha.meudoglindo.model.AntiPulga;
 import br.com.leorocha.meudoglindo.service.AntiPulgaService;
 
 @RestController
-@RequestMapping(path="/anti-pulga")
+@RequestMapping(path="/antipulga")
 public class AntiPulgaController {
 	@Autowired
 	private AntiPulgaService service; 

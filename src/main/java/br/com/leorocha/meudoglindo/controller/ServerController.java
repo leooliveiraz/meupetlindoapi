@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServerController {
 	
 	@GetMapping("/status")
-	public void inscrever() {		
-		
+	public void getStatus() {
 	}
 	
 }
