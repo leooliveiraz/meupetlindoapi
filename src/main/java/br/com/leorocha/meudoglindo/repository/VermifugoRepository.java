@@ -15,4 +15,6 @@ public interface VermifugoRepository extends CrudRepository<Vermifugo, Integer> 
 	List<Vermifugo> findByAnimalIdAndAnimalUsuarioIdOrderByDataVermifugoDesc(Integer idAnimal, Integer id);
 
 	List<Vermifugo> findByAnimalUsuarioIdOrderByDataVermifugoDesc(Integer id);
+
+    List<Vermifugo> findByAnimalIdOrderByDataVermifugoDesc(Integer idAnimal);
 }

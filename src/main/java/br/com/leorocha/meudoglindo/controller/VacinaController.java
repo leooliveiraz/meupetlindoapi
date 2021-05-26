@@ -50,7 +50,7 @@ public class VacinaController {
 	}
 
 	@GetMapping("/animal/{idAnimal}")
-	public List<VacinaDTO> listarAnimal(@PathVariable Integer idAnimal) {
+	public List<VacinaDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
 		List<Vacina> lista = service.listarPorAnimal(idAnimal);
 		List<VacinaDTO> dtos = new ArrayList<VacinaDTO>();
 		lista.forEach(vacina -> dtos.add(new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina())));

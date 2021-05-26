@@ -50,7 +50,7 @@ public class AntiPulgaController {
 	}
 
 	@GetMapping("/animal/{idAnimal}")
-	public List<AntiPulgaDTO> listarAnimal(@PathVariable Integer idAnimal) {
+	public List<AntiPulgaDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
 		List<AntiPulga> lista = service.listarPorAnimal(idAnimal);
 		List<AntiPulgaDTO> dtos = new ArrayList<AntiPulgaDTO>();
 		lista.forEach(antiPulga -> dtos.add(new AntiPulgaDTO(antiPulga.getId(), antiPulga.getAnimal().getId(), antiPulga.getNome(), antiPulga.getDataAntiPulga(), antiPulga.getDataProxima())));

@@ -19,4 +19,5 @@ public interface ExameRepository extends CrudRepository<Exame, Integer> {
 
 	public List<Exame> findByAnimalUsuarioIdOrderByDataExameAsc(Integer id);
 
+	List<Exame> findByAnimalIdOrderByDataExameAsc(Integer idAnimal);
 }

@@ -51,7 +51,7 @@ public class PesoController {
 	}
 
 	@GetMapping("/animal/{idAnimal}")
-	public List<PesoDTO> listarAnimal(@PathVariable Integer idAnimal) {
+	public List<PesoDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
 		List<Peso> lista = service.listarPorAnimal(idAnimal);
 		List<PesoDTO> dtos = new ArrayList<PesoDTO>();
 		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem())));

@@ -15,4 +15,6 @@ public interface MedicamentoRepository extends CrudRepository<Medicamento, Integ
 	List<Medicamento> findByAnimalIdAndAnimalUsuarioIdOrderByDataMedicamentoDesc(Integer idAnimal, Integer id);
 
 	List<Medicamento> findByAnimalUsuarioIdOrderByDataMedicamentoDesc(Integer id);
+
+    List<Medicamento> findByAnimalIdOrderByDataMedicamentoDesc(Integer idAnimal);
 }

@@ -50,7 +50,7 @@ public class VermifugoController {
 	}
 
 	@GetMapping("/animal/{idAnimal}")
-	public List<VermifugoDTO> listarAnimal(@PathVariable Integer idAnimal) {
+	public List<VermifugoDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
 		List<Vermifugo> lista = service.listarPorAnimal(idAnimal);
 		List<VermifugoDTO> dtos = new ArrayList<VermifugoDTO>();
 		lista.forEach(vermifugo -> dtos.add(new VermifugoDTO(vermifugo.getId(), vermifugo.getAnimal().getId(), vermifugo.getNome(), vermifugo.getDataVermifugo(), vermifugo.getDataProximoVermifugo())));

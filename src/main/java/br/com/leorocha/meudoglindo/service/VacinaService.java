@@ -53,9 +53,12 @@ public class VacinaService {
 	public void delete(Integer id) {
 		repository.deleteById(id);
 	}
-	public List<Vacina> listarPorAnimal(Integer idAnimal) {
-		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		return (List<Vacina>) repository.findByAnimalIdAndAnimalUsuarioIdOrderByDataVacinaDesc(idAnimal, usuario.getId());
+	public List<Vacina> listarPorAnimal(Integer idAnimal) throws AuthenticationException {
+		if(animalService.validarAcessoAoAnimal(idAnimal)){
+			return repository.findByAnimalIdOrderByDataVacinaDesc(idAnimal);
+		} else {
+			throw new AuthenticationException("Você não pode ver essas informações.");
+		}
 	}
 	public void deletarLista(List<Vacina> listaVacina) {
 		this.repository.deleteAll(listaVacina);

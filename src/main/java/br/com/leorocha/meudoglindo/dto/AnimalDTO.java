@@ -14,6 +14,16 @@ public class AnimalDTO {
 	private String nome;
 	private LocalDate dataNascimento;
 	private LocalDate dataAdocao;
-	private LocalDate dataObito;	
+	private LocalDate dataObito;
 	private String idArquivo;
+	private boolean dono;
+
+	public AnimalDTO(Integer id, String nome, LocalDate dataNascimento, LocalDate dataAdocao, LocalDate dataObito, String idArquivo) {
+		this.id = id;
+		this.nome = nome;
+		this.dataNascimento = dataNascimento;
+		this.dataAdocao = dataAdocao;
+		this.dataObito = dataObito;
+		this.idArquivo = idArquivo;
+	}
 }

@@ -47,15 +47,20 @@ public class AntiPulgaService {
 	
 	public AntiPulga buscar(Integer id) {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
+
 		return repository.findByIdAndAnimalUsuarioId(id, usuario.getId()).orElse(null);
 	}
 	
 	public void delete(Integer id) {
 		repository.deleteById(id);
 	}
-	public List<AntiPulga> listarPorAnimal(Integer idAnimal) {
-		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		return (List<AntiPulga>) repository.findByAnimalIdAndAnimalUsuarioIdOrderByDataAntiPulgaDesc(idAnimal, usuario.getId());
+
+	public List<AntiPulga> listarPorAnimal(Integer idAnimal) throws AuthenticationException {
+		if(animalService.validarAcessoAoAnimal(idAnimal)){
+			return repository.findByAnimalIdOrderByDataAntiPulgaDesc(idAnimal);
+		} else {
+			throw new AuthenticationException("Você não pode ver essas informações.");
+		}
 	}
 	public void deletarLista(List<AntiPulga> listaAntiPulga) {
 		this.repository.deleteAll(listaAntiPulga);

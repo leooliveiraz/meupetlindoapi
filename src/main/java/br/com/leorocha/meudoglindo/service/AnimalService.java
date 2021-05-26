@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
 
+import br.com.leorocha.meudoglindo.enums.StatusCompartilhamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class AnimalService {
 	private UsuarioService usuarioService;
 	@Autowired
 	private PesoService pesoService;
+
 	
 	public void salvar(Animal animal) {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
@@ -45,9 +47,13 @@ public class AnimalService {
 		animal.setNome(animalDTO.getNome());
 		repository.save(animal);
 	}
-	public Animal buscar(Integer id) {
+	public Animal buscar(Integer idAnimal) {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		return repository.findByIdAndUsuarioId(id,usuario.getId()).orElse(null);
+		Animal animal = repository.findByIdAndUsuarioId(idAnimal,usuario.getId()).orElse(null);
+		if(animal == null){
+			animal = repository.findAnimalCompartilhado(idAnimal, usuario.getId(), StatusCompartilhamento.COMPARTILHADO).orElse(null);
+		}
+		return animal;
 	}
 	public List<Animal> listar() {
 		return (List<Animal>) repository.findAll();
@@ -81,5 +87,14 @@ public class AnimalService {
 		}
 		salvar(animal);
 		
+	}
+
+	public boolean validarAcessoAoAnimal(Integer idAnimal){
+		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
+		Animal animal = repository.findByIdAndUsuarioId(idAnimal,usuario.getId()).orElse(null);
+		if(animal == null){
+			animal = repository.findAnimalCompartilhado(idAnimal, usuario.getId(), StatusCompartilhamento.COMPARTILHADO).orElse(null);
+		}
+		return (animal != null);
 	}
 }

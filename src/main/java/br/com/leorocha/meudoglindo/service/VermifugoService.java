@@ -53,10 +53,15 @@ public class VermifugoService {
 	public void delete(Integer id) {
 		repository.deleteById(id);
 	}
-	public List<Vermifugo> listarPorAnimal(Integer idAnimal) {
-		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		return (List<Vermifugo>) repository.findByAnimalIdAndAnimalUsuarioIdOrderByDataVermifugoDesc(idAnimal, usuario.getId());
+
+	public List<Vermifugo> listarPorAnimal(Integer idAnimal) throws AuthenticationException {
+		if(animalService.validarAcessoAoAnimal(idAnimal)){
+			return repository.findByAnimalIdOrderByDataVermifugoDesc(idAnimal);
+		} else {
+			throw new AuthenticationException("Você não pode ver essas informações.");
+		}
 	}
+
 	public void deletarLista(List<Vermifugo> listaVermifugo) {
 		this.repository.deleteAll(listaVermifugo);
 		

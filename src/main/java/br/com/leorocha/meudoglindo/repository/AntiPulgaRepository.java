@@ -12,7 +12,10 @@ public interface AntiPulgaRepository extends CrudRepository<AntiPulga, Integer> 
 
 	Optional<AntiPulga> findByIdAndAnimalUsuarioId(Integer idPeso, Integer idUsuario);
 	
-	List<AntiPulga> findByAnimalIdAndAnimalUsuarioIdOrderByDataAntiPulgaDesc(Integer idAnimal, Integer id);
+	List<AntiPulga>
+	findByAnimalIdAndAnimalUsuarioIdOrderByDataAntiPulgaDesc(Integer idAnimal, Integer id);
 
 	List<AntiPulga> findByAnimalUsuarioIdOrderByDataAntiPulgaDesc(Integer id);
+
+	List<AntiPulga> findByAnimalIdOrderByDataAntiPulgaDesc(Integer idAnimal);
 }

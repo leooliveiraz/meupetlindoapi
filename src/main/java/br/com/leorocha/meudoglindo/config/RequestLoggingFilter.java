@@ -37,7 +37,10 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		String uri = request.getRequestURI();
 
-		if(!uri.startsWith("/arquivo/") && !uri.startsWith("/web-push") && !uri.startsWith("/server/status") ) {
+		if(!uri.startsWith("/arquivo/") &&
+				!uri.startsWith("/compartilhar-animal") &&
+				!uri.startsWith("/web-push") &&
+				!uri.startsWith("/server/status") ) {
 			String authorization = request.getHeader("Authorization");
 			boolean autenticado = this.autenticar(authorization);
 			if(!autenticado) {
