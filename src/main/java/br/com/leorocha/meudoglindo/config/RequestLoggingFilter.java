@@ -52,7 +52,10 @@ public class RequestLoggingFilter extends OncePerRequestFilter {
 		filterChain.doFilter(request, response);
 	}
 
-	private Boolean autenticar(String token) {
+	private Boolean autenticar(String token)  {
+		if(token == null){
+			return false;
+		}
 		token = token.replace("Bearer ", "");
 		try {
 			if(this.tokenService.tokenEncontrada(token)) {

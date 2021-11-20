@@ -1,5 +1,6 @@
 package br.com.leorocha.meudoglindo.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,8 @@ public interface VacinaRepository extends CrudRepository<Vacina, Integer> {
 	List<Vacina> findByAnimalUsuarioIdOrderByDataVacinaDesc(Integer id);
 
     List<Vacina> findByAnimalIdOrderByDataVacinaDesc(Integer idAnimal);
+
+    List<Vacina> findByDataProximaVacina(LocalDate dataEscolhida);
+
+	List<Vacina> findByDataProximaVacinaAndAnimalDataObitoIsNull(LocalDate dataEscolhida);
 }

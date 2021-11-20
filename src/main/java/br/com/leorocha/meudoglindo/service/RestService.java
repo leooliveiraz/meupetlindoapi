@@ -16,4 +16,7 @@ public class RestService {
     public String get(String url) {
         return this.restTemplate.getForObject(url, String.class);
     }
+    public String post(String url, Object json) {
+        return this.restTemplate.postForObject(url, json, String.class);
+    }
 }

@@ -1,5 +1,6 @@
 package br.com.leorocha.meudoglindo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
@@ -68,4 +69,11 @@ public class VacinaService {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
 		return (List<Vacina>) repository.findByAnimalUsuarioIdOrderByDataVacinaDesc(usuario.getId());
 	}
+
+    public List<Vacina> emQuantosDias(int qtdDias) {
+		LocalDate dataEscolhida = LocalDate.now();
+		dataEscolhida = dataEscolhida.plusDays(qtdDias);
+		List<Vacina> vacinas = repository.findByDataProximaVacinaAndAnimalDataObitoIsNull(dataEscolhida);
+		return vacinas;
+    }
 }
