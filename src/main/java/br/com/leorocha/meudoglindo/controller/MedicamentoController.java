@@ -20,47 +20,49 @@ import br.com.leorocha.meudoglindo.model.Medicamento;
 import br.com.leorocha.meudoglindo.service.MedicamentoService;
 
 @RestController
-@RequestMapping(path="/medicamento")
+@RequestMapping(path = "/medicamento")
 public class MedicamentoController {
-	@Autowired
-	private MedicamentoService service; 
-	
-	@PostMapping
-	public void salvar(@RequestBody MedicamentoDTO dto ) throws AuthenticationException {
-		service.salvar(dto);
-	}
-	@PutMapping
-	public void atualizar(MedicamentoDTO dto) throws AuthenticationException {
-		service.atualizar(dto);
-	}
+    @Autowired
+    private MedicamentoService service;
 
-	@GetMapping("/{id}")
-	public MedicamentoDTO buscar(@PathVariable Integer id) {
-		Medicamento medicamento=  service.buscar(id);
-		if(null != medicamento) {
-			return new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getDataMedicamento(), medicamento.getDataProxima());
-		} else {
-			return null;
-		}
-	}
-	
-	@DeleteMapping("/{id}")
-	public void delete(@PathVariable Integer id) {
-		service.delete(id);
-	}
+    @PostMapping
+    public void salvar(@RequestBody MedicamentoDTO dto) throws AuthenticationException {
+        service.salvar(dto);
+    }
 
-	@GetMapping("/animal/{idAnimal}")
-	public List<MedicamentoDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
-		List<Medicamento> lista = service.listarPorAnimal(idAnimal);
-		List<MedicamentoDTO> dtos = new ArrayList<MedicamentoDTO>();
-		lista.forEach(medicamento -> dtos.add(new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getDataMedicamento(), medicamento.getDataProxima())));
-		return dtos; 
-	}
-	@GetMapping
-	public List<MedicamentoDTO> listar() {
-		List<Medicamento> lista = service.listarPorUsuario();
-		List<MedicamentoDTO> dtos = new ArrayList<MedicamentoDTO>();
-		lista.forEach(medicamento -> dtos.add(new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getDataMedicamento(), medicamento.getDataProxima())));
-		return dtos; 
-	}
+    @PutMapping
+    public void atualizar(MedicamentoDTO dto) throws AuthenticationException {
+        service.atualizar(dto);
+    }
+
+    @GetMapping("/{id}")
+    public MedicamentoDTO buscar(@PathVariable Integer id) {
+        Medicamento medicamento = service.buscar(id);
+        if (null != medicamento) {
+            return new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima());
+        } else {
+            return null;
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        service.delete(id);
+    }
+
+    @GetMapping("/animal/{idAnimal}")
+    public List<MedicamentoDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
+        List<Medicamento> lista = service.listarPorAnimal(idAnimal);
+        List<MedicamentoDTO> dtos = new ArrayList<MedicamentoDTO>();
+        lista.forEach(medicamento -> dtos.add(new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima())));
+        return dtos;
+    }
+
+    @GetMapping
+    public List<MedicamentoDTO> listar() {
+        List<Medicamento> lista = service.listarPorUsuario();
+        List<MedicamentoDTO> dtos = new ArrayList<MedicamentoDTO>();
+        lista.forEach(medicamento -> dtos.add(new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima())));
+        return dtos;
+    }
 }

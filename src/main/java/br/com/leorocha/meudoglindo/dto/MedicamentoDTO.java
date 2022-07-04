@@ -14,6 +14,7 @@ public class MedicamentoDTO {
 	private Integer id;
 	private Integer idAnimal;
 	private String nome;
+	private String tipoMedicamento;
 	private LocalDate dataMedicamento;
 	private LocalDate dataProxima;
 }

@@ -22,6 +22,7 @@ public class Medicamento {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private String tipoMedicamento;
 	private LocalDate dataMedicamento;
 	private LocalDate dataProxima;
 	
