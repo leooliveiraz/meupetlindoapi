@@ -19,4 +19,8 @@ public class Inscricao {
     private Usuario usuario;
 
     private LocalDateTime dataInscricao;
+
+    private boolean ativo  = true;
+    private LocalDateTime dataCancelamento;
+    private String userAgent;
 }

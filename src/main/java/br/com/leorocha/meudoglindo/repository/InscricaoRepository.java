@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface InscricaolRepository extends CrudRepository<Inscricao, Integer> {
+public interface InscricaoRepository extends CrudRepository<Inscricao, Integer> {
 
     Inscricao findByInscricao(String json);
 
