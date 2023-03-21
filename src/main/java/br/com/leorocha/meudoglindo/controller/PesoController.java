@@ -39,7 +39,7 @@ public class PesoController {
 	public PesoDTO buscar(@PathVariable Integer id) {
 		Peso peso=  service.buscar(id);
 		if(null != peso) {
-			return new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem());
+			return new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem(), peso.getObservacao());
 		} else {
 			return null;
 		}
@@ -54,7 +54,7 @@ public class PesoController {
 	public List<PesoDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
 		List<Peso> lista = service.listarPorAnimal(idAnimal);
 		List<PesoDTO> dtos = new ArrayList<PesoDTO>();
-		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem())));
+		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem(), peso.getObservacao())));
 		return dtos; 
 	}
 
@@ -62,7 +62,7 @@ public class PesoController {
 	public List<PesoDTO> listar() {
 		List<Peso> lista = service.listarPorUsuario();
 		List<PesoDTO> dtos = new ArrayList<PesoDTO>();
-		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem())));
+		lista.forEach(peso -> dtos.add(new PesoDTO(peso.getId(), peso.getAnimal().getId(), peso.getPeso(), peso.getDataPesagem(), peso.getObservacao())));
 		return dtos; 
 	}
 }

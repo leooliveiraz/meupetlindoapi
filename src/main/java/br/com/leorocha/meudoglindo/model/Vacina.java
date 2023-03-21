@@ -24,8 +24,10 @@ public class Vacina {
 	private String nome;
 	private LocalDate dataVacina;
 	private LocalDate dataProximaVacina;
+	private String observacao;
 	
 	@ManyToOne
 	@JoinColumn(name = "animal")
 	private Animal animal;
+
 }

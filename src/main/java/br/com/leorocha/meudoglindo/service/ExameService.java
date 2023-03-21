@@ -34,7 +34,7 @@ public class ExameService {
 		if(animal.getUsuario().getId() != usuario.getId() && !permissao) {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
-		Exame exame = new Exame(null, dto.getNome(), dto.getDataExame(), animal);
+		Exame exame = new Exame(null, dto.getNome(), dto.getDataExame(), dto.getObservacao(), animal);
 		repository.save(exame);		
 	}
 

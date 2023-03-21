@@ -23,6 +23,7 @@ public class Peso {
 	private Integer id;
 	private Double peso;
 	private LocalDate dataPesagem;
+	private String observacao;
 	
 	@ManyToOne
 	@JoinColumn(name = "animal")

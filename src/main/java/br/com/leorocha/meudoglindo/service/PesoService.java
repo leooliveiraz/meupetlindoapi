@@ -34,7 +34,7 @@ public class PesoService {
 		if(animal.getUsuario().getId() != usuario.getId() && !permissao) {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
-		Peso peso = new Peso(null, dto.getPeso(), dto.getDataPesagem(), animal);
+		Peso peso = new Peso(null, dto.getPeso(), dto.getDataPesagem(), dto.getObservacao(), animal);
 		repository.save(peso);
 	}
 	public void atualizar(PesoDTO dto) throws AuthenticationException {

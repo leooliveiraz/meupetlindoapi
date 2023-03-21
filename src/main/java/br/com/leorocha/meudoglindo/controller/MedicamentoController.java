@@ -39,7 +39,7 @@ public class MedicamentoController {
     public MedicamentoDTO buscar(@PathVariable Integer id) {
         Medicamento medicamento = service.buscar(id);
         if (null != medicamento) {
-            return new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima());
+            return new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima(), medicamento.getObservacao());
         } else {
             return null;
         }
@@ -54,7 +54,7 @@ public class MedicamentoController {
     public List<MedicamentoDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
         List<Medicamento> lista = service.listarPorAnimal(idAnimal);
         List<MedicamentoDTO> dtos = new ArrayList<MedicamentoDTO>();
-        lista.forEach(medicamento -> dtos.add(new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima())));
+        lista.forEach(medicamento -> dtos.add(new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima(), medicamento.getObservacao())));
         return dtos;
     }
 
@@ -62,7 +62,7 @@ public class MedicamentoController {
     public List<MedicamentoDTO> listar() {
         List<Medicamento> lista = service.listarPorUsuario();
         List<MedicamentoDTO> dtos = new ArrayList<MedicamentoDTO>();
-        lista.forEach(medicamento -> dtos.add(new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima())));
+        lista.forEach(medicamento -> dtos.add(new MedicamentoDTO(medicamento.getId(), medicamento.getAnimal().getId(), medicamento.getNome(), medicamento.getTipoMedicamento(), medicamento.getDataMedicamento(), medicamento.getDataProxima(), medicamento.getObservacao())));
         return dtos;
     }
 }

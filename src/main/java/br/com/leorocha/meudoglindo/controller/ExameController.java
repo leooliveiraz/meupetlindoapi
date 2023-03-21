@@ -40,7 +40,7 @@ public class ExameController {
 	public ExameDTO buscar(@PathVariable Integer id) {
 		Exame exame=  service.buscar(id);
 		if(null != exame) {
-			return new ExameDTO(exame.getId(),exame.getNome(), exame.getDataExame(), exame.getAnimal().getId());
+			return new ExameDTO(exame.getId(),exame.getNome(), exame.getDataExame(), exame.getAnimal().getId(), exame.getObservacao());
 		} else {
 			return null;
 		}
@@ -55,14 +55,14 @@ public class ExameController {
 	public List<ExameDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
 		List<Exame> lista = service.listarPorAnimal(idAnimal);
 		List<ExameDTO> dtos = new ArrayList<ExameDTO>();
-		lista.forEach(exame -> dtos.add(new ExameDTO(exame.getId(), exame.getNome(), exame.getDataExame(),exame.getAnimal().getId())));
+		lista.forEach(exame -> dtos.add(new ExameDTO(exame.getId(), exame.getNome(), exame.getDataExame(),exame.getAnimal().getId(), exame.getObservacao())));
 		return dtos; 
 	}
 	@GetMapping
 	public List<ExameDTO> listar() {
 		List<Exame> lista = service.listarPorUsuario();
 		List<ExameDTO> dtos = new ArrayList<ExameDTO>();
-		lista.forEach(exame -> dtos.add(new ExameDTO(exame.getId(), exame.getNome(), exame.getDataExame(), exame.getAnimal().getId())));
+		lista.forEach(exame -> dtos.add(new ExameDTO(exame.getId(), exame.getNome(), exame.getDataExame(), exame.getAnimal().getId(), exame.getObservacao())));
 		return dtos; 
 	}
 }

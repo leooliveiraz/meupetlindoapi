@@ -34,7 +34,7 @@ public class MedicamentoService {
 		if(animal.getUsuario().getId() != usuario.getId() && !permissao) {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
-		Medicamento medicamento = new Medicamento(null, dto.getNome(),dto.getTipoMedicamento(), dto.getDataMedicamento(), dto.getDataProxima(), animal);
+		Medicamento medicamento = new Medicamento(null, dto.getNome(),dto.getTipoMedicamento(), dto.getDataMedicamento(), dto.getDataProxima(), dto.getObservacao(), animal);
 		repository.save(medicamento);
 	}
 	public void atualizar(MedicamentoDTO dto) throws AuthenticationException {

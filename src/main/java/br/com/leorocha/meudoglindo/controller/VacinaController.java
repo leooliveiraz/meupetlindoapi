@@ -38,7 +38,7 @@ public class VacinaController {
 	public VacinaDTO buscar(@PathVariable Integer id) {
 		Vacina vacina=  service.buscar(id);
 		if(null != vacina) {
-			return new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina());
+			return new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina(), vacina.getObservacao());
 		} else {
 			return null;
 		}
@@ -53,14 +53,14 @@ public class VacinaController {
 	public List<VacinaDTO> listarAnimal(@PathVariable Integer idAnimal) throws AuthenticationException {
 		List<Vacina> lista = service.listarPorAnimal(idAnimal);
 		List<VacinaDTO> dtos = new ArrayList<VacinaDTO>();
-		lista.forEach(vacina -> dtos.add(new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina())));
+		lista.forEach(vacina -> dtos.add(new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina(),vacina.getObservacao())));
 		return dtos; 
 	}
 	@GetMapping
 	public List<VacinaDTO> listar() {
 		List<Vacina> lista = service.listarPorUsuario();
 		List<VacinaDTO> dtos = new ArrayList<VacinaDTO>();
-		lista.forEach(vacina -> dtos.add(new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina())));
+		lista.forEach(vacina -> dtos.add(new VacinaDTO(vacina.getId(), vacina.getAnimal().getId(), vacina.getNome(), vacina.getDataVacina(), vacina.getDataProximaVacina(), vacina.getObservacao())));
 		return dtos; 
 	}
 }

@@ -35,7 +35,7 @@ public class VacinaService {
 		if(animal.getUsuario().getId() != usuario.getId() && !permissao) {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
-		Vacina vacina = new Vacina(null, dto.getNome(), dto.getDataVacina(), dto.getDataProximaVacina(), animal);
+		Vacina vacina = new Vacina(null, dto.getNome(), dto.getDataVacina(), dto.getDataProximaVacina(), dto.getObservacao(), animal);
 		repository.save(vacina);
 	}
 	public void atualizar(VacinaDTO dto) throws AuthenticationException {

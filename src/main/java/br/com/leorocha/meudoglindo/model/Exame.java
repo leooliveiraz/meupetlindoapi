@@ -23,6 +23,7 @@ public class Exame {
 	private Integer id;
 	private String nome;
 	private LocalDate dataExame;
+	private String observacao;
 	@ManyToOne
 	@JoinColumn(name = "animal")
 	private Animal animal;

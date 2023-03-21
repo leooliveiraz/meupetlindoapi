@@ -25,6 +25,7 @@ public class Medicamento {
 	private String tipoMedicamento;
 	private LocalDate dataMedicamento;
 	private LocalDate dataProxima;
+	private String observacao;
 	
 	@ManyToOne
 	@JoinColumn(name = "animal")

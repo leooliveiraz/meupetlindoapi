@@ -14,4 +14,5 @@ public class ExameDTO {
 	private String nome;
 	private LocalDate dataExame;
 	private Integer idAnimal;
+	private String observacao;
 }

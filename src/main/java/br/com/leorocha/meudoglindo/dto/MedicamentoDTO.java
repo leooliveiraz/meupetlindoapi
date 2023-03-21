@@ -17,4 +17,5 @@ public class MedicamentoDTO {
 	private String tipoMedicamento;
 	private LocalDate dataMedicamento;
 	private LocalDate dataProxima;
+	private String observacao;
 }

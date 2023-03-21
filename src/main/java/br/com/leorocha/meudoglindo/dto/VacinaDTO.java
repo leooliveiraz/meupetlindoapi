@@ -16,4 +16,5 @@ public class VacinaDTO {
 	private String nome;
 	private LocalDate dataVacina;
 	private LocalDate dataProximaVacina;
+	private String observacao;
 }

@@ -14,5 +14,6 @@ public class PesoDTO {
 	private Integer id;
 	private Integer idAnimal;
 	private Double peso;
-	private LocalDate dataPesagem; 
+	private LocalDate dataPesagem;
+	private String observacao;
 }
