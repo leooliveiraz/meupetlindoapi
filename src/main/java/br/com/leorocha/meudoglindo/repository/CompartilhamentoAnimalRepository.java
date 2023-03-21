@@ -1,5 +1,6 @@
 package br.com.leorocha.meudoglindo.repository;
 
+import br.com.leorocha.meudoglindo.enums.PermissaoCompartilhamento;
 import br.com.leorocha.meudoglindo.enums.StatusCompartilhamento;
 import br.com.leorocha.meudoglindo.model.Animal;
 import br.com.leorocha.meudoglindo.model.Arquivo;
@@ -11,7 +12,9 @@ import java.util.List;
 public interface CompartilhamentoAnimalRepository extends CrudRepository<CompartilhamentoAnimal, Integer> {
     CompartilhamentoAnimal findByCodigo(String codigo);
 
-    List<CompartilhamentoAnimal> findByUsuarioIdAndStatus(Integer id, StatusCompartilhamento compartilhado);
+    List<CompartilhamentoAnimal> findByUsuarioIdAndStatusAndPermissao(Integer id, StatusCompartilhamento compartilhado, PermissaoCompartilhamento permissao);
 
     List<CompartilhamentoAnimal> findByAnimalIdAndUsuarioIdAndStatus(Integer id, Integer id1, StatusCompartilhamento compartilhado);
+
+    Boolean existsByUsuarioIdAndAnimalIdAndStatusAndPermissao(Integer idUsuario, Integer idAnimal, StatusCompartilhamento compartilhado, PermissaoCompartilhamento permissaoCompartilhamento);
 }

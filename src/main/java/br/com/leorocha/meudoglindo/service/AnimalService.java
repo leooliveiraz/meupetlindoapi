@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
 
+import br.com.leorocha.meudoglindo.enums.PermissaoCompartilhamento;
 import br.com.leorocha.meudoglindo.enums.StatusCompartilhamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class AnimalService {
 	private UsuarioService usuarioService;
 	@Autowired
 	private PesoService pesoService;
+	@Autowired
+	private CompartilharAnimalService compartilharAnimalService;
 
 	
 	public void salvar(Animal animal) {
@@ -38,7 +41,8 @@ public class AnimalService {
 	public void atualizar(AnimalDTO animalDTO) throws AuthenticationException {
 		Animal animal = buscar(animalDTO.getId());
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		if(animal.getUsuario().getId() != usuario.getId()) {
+		Boolean permissao = compartilharAnimalService.estaCompartilhado(animal.getId(), usuario.getId(), PermissaoCompartilhamento.EDITAR);
+		if(animal.getUsuario().getId() != usuario.getId() && !permissao) {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
 		animal.setDataNascimento(animalDTO.getDataNascimento());

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
 
+import br.com.leorocha.meudoglindo.enums.PermissaoCompartilhamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +23,21 @@ public class ExameService {
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
-	private ExameRepository repository; 
+	private ExameRepository repository;
+	@Autowired
+	private CompartilharAnimalService compartilharAnimalService;
 
 	public void salvar(ExameDTO dto) throws AuthenticationException {
 		Animal animal = animalService.buscar(dto.getIdAnimal());
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		if(animal.getUsuario().getId() != usuario.getId()) {
+		Boolean permissao = compartilharAnimalService.estaCompartilhado(animal.getId(), usuario.getId(), PermissaoCompartilhamento.EDITAR);
+		if(animal.getUsuario().getId() != usuario.getId() && !permissao) {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
 		Exame exame = new Exame(null, dto.getNome(), dto.getDataExame(), animal);
 		repository.save(exame);		
 	}
+
 
 	public void atualizar(ExameDTO dto) throws AuthenticationException {
 		Exame exame = buscar(dto.getId());

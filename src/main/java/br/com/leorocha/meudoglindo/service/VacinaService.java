@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
 
+import br.com.leorocha.meudoglindo.enums.PermissaoCompartilhamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,15 @@ public class VacinaService {
 	@Autowired
 	private AnimalService animalService; 
 	@Autowired
-	private VacinaRepository repository; 
+	private VacinaRepository repository;
+	@Autowired
+	private CompartilharAnimalService compartilharAnimalService;
 	
 	public void salvar(VacinaDTO dto) throws AuthenticationException {
 		Animal animal = animalService.buscar(dto.getIdAnimal());
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		if(animal.getUsuario().getId() != usuario.getId()) {
+		Boolean permissao = compartilharAnimalService.estaCompartilhado(animal.getId(), usuario.getId(), PermissaoCompartilhamento.EDITAR);
+		if(animal.getUsuario().getId() != usuario.getId() && !permissao) {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
 		Vacina vacina = new Vacina(null, dto.getNome(), dto.getDataVacina(), dto.getDataProximaVacina(), animal);

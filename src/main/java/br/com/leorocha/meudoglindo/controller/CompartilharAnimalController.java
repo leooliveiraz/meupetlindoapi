@@ -22,9 +22,9 @@ public class CompartilharAnimalController {
     @Autowired
     private CompartilharAnimalService service;
 
-    @PostMapping("/{idAnimal}")
-    public CodigoCompartilhamentoAnimalDTO buscar(@PathVariable Integer idAnimal) throws AuthenticationException {
-        String codigo = service.gerarCodigo(idAnimal);
+    @PostMapping("/{idAnimal}/{permissao}")
+    public CodigoCompartilhamentoAnimalDTO buscar(@PathVariable Integer idAnimal, @PathVariable String permissao) throws AuthenticationException {
+        String codigo = service.gerarCodigo(idAnimal, permissao);
         CodigoCompartilhamentoAnimalDTO dto = new CodigoCompartilhamentoAnimalDTO(codigo);
         return dto;
     }

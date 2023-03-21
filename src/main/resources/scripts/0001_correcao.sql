@@ -53,3 +53,7 @@ ALTER TABLE exame DROP CONSTRAINT exame_fk;
 ALTER TABLE exame ADD CONSTRAINT exame_fk FOREIGN KEY (animal) REFERENCES animal(id) ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE anti_pulga DROP CONSTRAINT antipulga_fk;
 ALTER TABLE anti_pulga ADD CONSTRAINT antipulga_fk FOREIGN KEY (animal) REFERENCES animal(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--changeset Leonardo Rocha:09
+DROP TABLE anti_pulga;
+DROP TABLE vermifugo;

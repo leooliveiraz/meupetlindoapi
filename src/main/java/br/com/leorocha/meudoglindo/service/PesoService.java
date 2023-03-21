@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
 
+import br.com.leorocha.meudoglindo.enums.PermissaoCompartilhamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,15 @@ public class PesoService {
 	@Autowired
 	private AnimalService animalService; 
 	@Autowired
-	private PesoRepository repository; 
+	private PesoRepository repository;
+	@Autowired
+	private CompartilharAnimalService compartilharAnimalService;
 	
 	public void salvar(PesoDTO dto) throws AuthenticationException {
 		Animal animal = animalService.buscar(dto.getIdAnimal());
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
-		if(animal.getUsuario().getId() != usuario.getId()) {
+		Boolean permissao = compartilharAnimalService.estaCompartilhado(animal.getId(), usuario.getId(), PermissaoCompartilhamento.EDITAR);
+		if(animal.getUsuario().getId() != usuario.getId() && !permissao) {
 			throw new AuthenticationException("Você não pode alterar esse registro");
 		}
 		Peso peso = new Peso(null, dto.getPeso(), dto.getDataPesagem(), animal);

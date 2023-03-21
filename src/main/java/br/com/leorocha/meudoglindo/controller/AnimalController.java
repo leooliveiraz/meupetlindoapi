@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
+import javax.websocket.server.PathParam;
 
+import br.com.leorocha.meudoglindo.enums.PermissaoCompartilhamento;
 import br.com.leorocha.meudoglindo.model.Usuario;
 import br.com.leorocha.meudoglindo.service.CompartilharAnimalService;
 import br.com.leorocha.meudoglindo.service.RequestService;
@@ -90,9 +92,9 @@ public class AnimalController {
 	}
 
 	@GetMapping("/compartilhados")
-	public List<AnimalDTO> compartilhados() throws AuthenticationException {
+	public List<AnimalDTO> compartilhados(@PathParam("permissao") PermissaoCompartilhamento permissao) throws AuthenticationException {
 		List<AnimalDTO> listaDTO = new ArrayList<AnimalDTO>();
-		List<Animal> listAnimal = compartilharService.listarCompartilhadosPorUsuario();
+		List<Animal> listAnimal = compartilharService.listarCompartilhadosPorUsuario(permissao);
 		listAnimal.forEach(animal -> {
 			listaDTO.add(new AnimalDTO(animal.getId(), animal.getNome(), animal.getDataNascimento(), animal.getDataAdocao(), animal.getDataObito(), animal.getImagem() != null ? animal.getImagem().getCripto() : null));
 		});
