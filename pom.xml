@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.leorocha</groupId>
-	<artifactId>meudoglindo</artifactId>
+	<artifactId>meupetlindo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>meudoglindo</name>
 	<description>Demo project for Spring Boot</description>
