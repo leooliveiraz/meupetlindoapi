@@ -18,13 +18,14 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.Security;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class WebPushNotificationService {
+public class InscricaoService {
     @Autowired
     private RequestService requestService;
     @Autowired
@@ -38,7 +39,7 @@ public class WebPushNotificationService {
     private String privateKey;
 
     private PushService pushService;
-    private List<Subscription> subscriptions = new ArrayList<>();
+    private List<Subscription> subscriptions = new ArrayList<>(); // remover depois de implementar o unscribe
 
     @PostConstruct
     private void init() throws GeneralSecurityException {
@@ -72,7 +73,6 @@ public class WebPushNotificationService {
         }
         inscricaoRepository.save(inscricao);
 
-        this.subscriptions.add(subscription);
     }
 
     public void unsubscribe(Subscription subscription) {
@@ -84,28 +84,33 @@ public class WebPushNotificationService {
         inscricaoRepository.save(inscricao);
     }
 
-    public void sendNotification(Subscription subscription, String messageJson) {
+    private void sendNotification(Subscription subscription, String messageJson) {
         try {
             pushService.send(new Notification(subscription, messageJson));
         } catch (GeneralSecurityException | IOException | JoseException | ExecutionException
-                | InterruptedException e) {
+                 | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    @Scheduled(fixedRate = 30000)
-    private void sendNotifications() {
-        System.out.println("Sending notifications to all subscribers");
+    private void sendTestNotifications() {
+        List<Subscription> subs = new ArrayList<>();
+
+        Gson gson = new Gson();
+        this.inscricaoRepository.findAll().forEach(i -> {
+            Subscription sub = gson.fromJson(i.getInscricao(), Subscription.class);
+            subs.add(sub);
+        });
 
         var json = """
                   {
                   "notification": { 
-                    "title": "PWA-PUSH-ANGULAR", 
-                    "body": "Uma nova notificação chegou!!", 
+                    "title": "MEU PET LINDO", 
+                    "body": "Não se esqueça de abrir o APP!", 
                     "vibrate": [100, 50, 100], 
                     "data": { 
-                        "dateOfArrival": "2018-08-31",
-                        "primaryKey": 1 
+                        "dateOfArrival": "2023-08-19",
+                        "primaryKey": 15 
                     }, 
                     "actions": [{ 
                         "action": "explore", 
@@ -115,9 +120,39 @@ public class WebPushNotificationService {
                 }
                 """;
 
-//        if(!subscriptions.isEmpty())
-//            subscriptions.forEach(subscription -> {
+        if (!subs.isEmpty())
+            subs.forEach(subscription -> {
 //                sendNotification(subscription, String.format(json, LocalTime.now()));
-//            });
+            });
+    }
+
+    public void prepareSendNotification(String titulo, String mensagem, String acao, String botaoAcao, Integer idAnimal, Inscricao inscricao) {
+        Gson gson = new Gson();
+        Subscription subscription = gson.fromJson(inscricao.getInscricao(), Subscription.class);
+
+        String json = String.format("""
+                  {
+                  "notification": { 
+                    "title": "%s", 
+                    "body": "%s", 
+                    "vibrate": [100, 50, 100], 
+                    "data": { 
+                        "dateOfArrival": "%s",
+                        "primaryKey": 15 ,
+                        "idAnimal": %s
+                    }, 
+                    "actions": [{ 
+                        "action": "%s", 
+                        "title": "%s" 
+                    }] 
+                  }
+                }
+                """,titulo,mensagem, LocalDate.now(), idAnimal,acao, botaoAcao);
+
+        sendNotification(subscription, json);
+    }
+
+    public List<Inscricao> listByUsuarioId(Integer idUsuario) {
+        return this.inscricaoRepository.findByUsuarioId(idUsuario);
     }
 }
