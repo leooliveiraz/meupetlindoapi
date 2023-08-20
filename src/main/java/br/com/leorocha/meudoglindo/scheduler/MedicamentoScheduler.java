@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public class MedicamentoScheduler {
 @Autowired
     private MedicamentoService medicamentoService;
-    @Scheduled(cron = "0 5 10 * * *", zone = "America/Sao_Paulo")
-    private void notificarVacinas() {
+    @Scheduled(cron = "0 0 10/16 * * *", zone = "America/Sao_Paulo")
+    private void notificarMedicamentos() {
         medicamentoService.notificarMedicamento(0);
         medicamentoService.notificarMedicamento(3);
         medicamentoService.notificarMedicamento(7);

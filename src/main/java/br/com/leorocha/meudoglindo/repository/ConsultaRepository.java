@@ -4,6 +4,7 @@ import br.com.leorocha.meudoglindo.model.Consulta;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +17,6 @@ public interface ConsultaRepository extends CrudRepository<Consulta, Integer> {
     List<Consulta> findByAnimalIdOrderByDataConsultaAsc(Integer idAnimal);
 
     Object findByAnimalUsuarioIdOrderByDataConsultaAsc(Integer id);
+
+    List<Consulta> findByProximaConsultaAndAnimalDataObitoIsNull(LocalDate dataEscolhida);
 }
