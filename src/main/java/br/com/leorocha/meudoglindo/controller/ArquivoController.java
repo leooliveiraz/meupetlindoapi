@@ -12,15 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.leorocha.meudoglindo.service.ArquivoService;
 
 @RestController
-@RequestMapping(path="/arquivo")
+@RequestMapping(path = "/arquivo")
 public class ArquivoController {
-	@Autowired
-	private ArquivoService service; 
-	
-	
+    @Autowired
+    private ArquivoService service;
 
-	@GetMapping(value = "/{token}", produces = MediaType.IMAGE_JPEG_VALUE)
-	public byte[] buscar(@PathVariable String  token) throws FileNotFoundException {		
-		return service.getArquivo(token);
-	}
+
+    @GetMapping(value = "/{token}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] buscar(@PathVariable String token) throws FileNotFoundException {
+        return service.getArquivo(token);
+    }
+
+    @GetMapping(value = "/{token}.jpg", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] buscarJpg(@PathVariable String token) throws FileNotFoundException {
+        return service.getArquivo(token);
+    }
 }
+
