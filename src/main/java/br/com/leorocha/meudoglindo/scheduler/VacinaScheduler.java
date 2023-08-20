@@ -1,12 +1,10 @@
 package br.com.leorocha.meudoglindo.scheduler;
 
-import br.com.leorocha.meudoglindo.model.Vacina;
 import br.com.leorocha.meudoglindo.service.VacinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class VacinaScheduler {

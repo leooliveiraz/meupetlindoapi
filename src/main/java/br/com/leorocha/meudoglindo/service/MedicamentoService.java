@@ -1,17 +1,16 @@
 package br.com.leorocha.meudoglindo.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
 
 import br.com.leorocha.meudoglindo.enums.PermissaoCompartilhamento;
+import br.com.leorocha.meudoglindo.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.leorocha.meudoglindo.dto.MedicamentoDTO;
-import br.com.leorocha.meudoglindo.model.Animal;
-import br.com.leorocha.meudoglindo.model.Usuario;
-import br.com.leorocha.meudoglindo.model.Medicamento;
 import br.com.leorocha.meudoglindo.repository.MedicamentoRepository;
 
 @Service
@@ -26,6 +25,8 @@ public class MedicamentoService {
 	private MedicamentoRepository repository;
 	@Autowired
 	private CompartilharAnimalService compartilharAnimalService;
+	@Autowired
+	private InscricaoService inscricaoService;
 	
 	public void salvar(MedicamentoDTO dto) throws AuthenticationException {
 		Animal animal = animalService.buscar(dto.getIdAnimal());
@@ -73,5 +74,29 @@ public class MedicamentoService {
 	public List<Medicamento> listarPorUsuario() {
 		Usuario usuario = usuarioService.buscarPorSub(requestService.getUserDTO().getSub());
 		return (List<Medicamento>) repository.findByAnimalUsuarioIdOrderByDataMedicamentoDesc(usuario.getId());
+	}
+
+	public List<Medicamento> emQuantosDias(int qtdDias) {
+		LocalDate dataEscolhida = LocalDate.now();
+		dataEscolhida = dataEscolhida.plusDays(qtdDias);
+		List<Medicamento> medicamentos = repository.findByDataProximaAndAnimalDataObitoIsNull(dataEscolhida);
+		return medicamentos;
+	}
+
+	public void notificarMedicamento(int diferencaDias) {
+		List<Medicamento> medicamentoList = emQuantosDias(diferencaDias);
+		medicamentoList.forEach(vacina -> {
+			Integer idUsuario = vacina.getAnimal().getUsuario().getId();
+			List<Inscricao> listaInscricao  = inscricaoService.listByUsuarioId(idUsuario);
+			listaInscricao.forEach(inscricao -> {
+				inscricaoService.prepareSendNotification("MEU PET LINDO - HORA DA MEDICAÇÃO",
+						"Não se esqueça, está na hora de dar o remédio para o seu pet: %s!"
+								.formatted(vacina.getAnimal().getNome()),
+						"aviso-medicacao",
+						"Abrir",
+						vacina.getAnimal().getId(),
+						inscricao);
+			});
+		});
 	}
 }
