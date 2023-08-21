@@ -23,4 +23,12 @@ public class ArquivoService {
 			return arquivo.getArquivo();
 		}
 	}
+
+	public Arquivo findById(Integer id){
+		return repository.findById(id).get();
+	}
+
+	public String findCriptoById(Integer id){
+		return repository.findCriptoById(id);
+	}
 }

@@ -25,6 +25,8 @@ public class ConsultaService {
 	private CompartilharAnimalService compartilharAnimalService;
 	@Autowired
 	private InscricaoService inscricaoService;
+	@Autowired
+	private ArquivoService arquivoService;
 
 	public void salvar(ConsultaDTO dto) throws AuthenticationException {
 		Animal animal = animalService.buscar(dto.getIdAnimal());
@@ -89,10 +91,11 @@ public class ConsultaService {
 		return repository.findByProximaConsultaAndAnimalDataObitoIsNull(dataEscolhida);
 	}
 
-	public void notificarMedicamento(int diferencaDias) {
+	public void notificarConsulta(int diferencaDias) {
 		List<Consulta> consultas = emQuantosDias(diferencaDias);
 		consultas.forEach(consulta -> {
 			Integer idUsuario = consulta.getAnimal().getUsuario().getId();
+			String imgSrc = arquivoService.findCriptoById(consulta.getAnimal().getImagem().getId());
 			List<Inscricao> listaInscricao = inscricaoService.listByUsuarioId(idUsuario);
 			listaInscricao.forEach(inscricao -> {
 				inscricaoService.prepareSendNotification("MEU PET LINDO - HORA DA CONSULTA",
@@ -101,6 +104,7 @@ public class ConsultaService {
 						"aviso-consulta",
 						"Abrir",
 						consulta.getAnimal().getId(),
+						imgSrc,
 						inscricao);
 			});
 		});

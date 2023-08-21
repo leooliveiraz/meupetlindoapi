@@ -31,6 +31,8 @@ public class VacinaService {
 
     @Autowired
     private InscricaoService inscricaoService;
+    @Autowired
+    private ArquivoService arquivoService;
 
     public void salvar(VacinaDTO dto) throws AuthenticationException {
         Animal animal = animalService.buscar(dto.getIdAnimal());
@@ -93,6 +95,7 @@ public class VacinaService {
         List<Vacina> listaVacinas = emQuantosDias(diferencaDias);
         listaVacinas.forEach(vacina -> {
             Integer idUsuario = vacina.getAnimal().getUsuario().getId();
+            String imgSrc = arquivoService.findCriptoById(vacina.getAnimal().getImagem().getId());
             List<Inscricao> listaInscricao  = inscricaoService.listByUsuarioId(idUsuario);
             listaInscricao.forEach(inscricao -> {
                 inscricaoService.prepareSendNotification("MEU PET LINDO - HORA DA VACINA",
@@ -101,6 +104,7 @@ public class VacinaService {
                         "aviso-vacina",
                         "Abrir",
                         vacina.getAnimal().getId(),
+                        imgSrc,
                         inscricao);
             });
         });

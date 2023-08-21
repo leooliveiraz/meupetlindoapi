@@ -27,6 +27,8 @@ public class MedicamentoService {
 	private CompartilharAnimalService compartilharAnimalService;
 	@Autowired
 	private InscricaoService inscricaoService;
+	@Autowired
+	private ArquivoService arquivoService;
 	
 	public void salvar(MedicamentoDTO dto) throws AuthenticationException {
 		Animal animal = animalService.buscar(dto.getIdAnimal());
@@ -85,16 +87,18 @@ public class MedicamentoService {
 
 	public void notificarMedicamento(int diferencaDias) {
 		List<Medicamento> medicamentoList = emQuantosDias(diferencaDias);
-		medicamentoList.forEach(vacina -> {
-			Integer idUsuario = vacina.getAnimal().getUsuario().getId();
+		medicamentoList.forEach(medicamento -> {
+			Integer idUsuario = medicamento.getAnimal().getUsuario().getId();
+			String imgSrc = arquivoService.findCriptoById(medicamento.getAnimal().getImagem().getId());
 			List<Inscricao> listaInscricao  = inscricaoService.listByUsuarioId(idUsuario);
 			listaInscricao.forEach(inscricao -> {
 				inscricaoService.prepareSendNotification("MEU PET LINDO - HORA DA MEDICAÇÃO",
 						"Não se esqueça, está na hora de dar o remédio para o seu pet: %s!"
-								.formatted(vacina.getAnimal().getNome()),
+								.formatted(medicamento.getAnimal().getNome()),
 						"aviso-medicacao",
 						"Abrir",
-						vacina.getAnimal().getId(),
+						medicamento.getAnimal().getId(),
+						imgSrc,
 						inscricao);
 			});
 		});

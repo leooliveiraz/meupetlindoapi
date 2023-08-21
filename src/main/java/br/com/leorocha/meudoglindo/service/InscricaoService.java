@@ -37,6 +37,10 @@ public class InscricaoService {
     private String publicKey;
     @Value("${vapid.private.key}")
     private String privateKey;
+    @Value("${app.url}")
+    private String appUrl;
+    @Value("${api.url}")
+    private String apiUrl;
 
     private PushService pushService;
     private List<Subscription> subscriptions = new ArrayList<>(); // remover depois de implementar o unscribe
@@ -109,7 +113,7 @@ public class InscricaoService {
                     "body": "Não se esqueça de abrir o APP!", 
                     "vibrate": [100, 50, 100], 
                     "data": { 
-                        "dateOfArrival": "2023-08-19",
+                        "dateOfArrival": "2023-08-20",
                         "primaryKey": 15 
                     }, 
                     "actions": [{ 
@@ -122,13 +126,18 @@ public class InscricaoService {
 
         if (!subs.isEmpty())
             subs.forEach(subscription -> {
-//                sendNotification(subscription, String.format(json, LocalTime.now()));
+                sendNotification(subscription, String.format(json, subscription));
             });
     }
 
-    public void prepareSendNotification(String titulo, String mensagem, String acao, String botaoAcao, Integer idAnimal, Inscricao inscricao) {
+    public void prepareSendNotification(String titulo, String mensagem, String acao, String botaoAcao, Integer idAnimal, String chaveArquivo, Inscricao inscricao) {
         Gson gson = new Gson();
         Subscription subscription = gson.fromJson(inscricao.getInscricao(), Subscription.class);
+
+        String img = apiUrl + "arquivo/"+ chaveArquivo + ".jpg";
+        String icon = appUrl + "assets/icons/icon-512x512.png";
+        String badge = appUrl + "assets/icons/icon.svg";
+
 
         String json = String.format("""
                   {
@@ -136,6 +145,9 @@ public class InscricaoService {
                     "title": "%s", 
                     "body": "%s", 
                     "vibrate": [100, 50, 100], 
+                    "image": "%s",
+                    "icon": "%s",
+                    "badge": "%s",
                     "data": { 
                         "dateOfArrival": "%s",
                         "primaryKey": 15 ,
@@ -147,7 +159,7 @@ public class InscricaoService {
                     }] 
                   }
                 }
-                """,titulo,mensagem, LocalDate.now(), idAnimal,acao, botaoAcao);
+                """, titulo, mensagem, img, icon,badge, LocalDate.now(), idAnimal, acao, botaoAcao);
 
         sendNotification(subscription, json);
     }
