@@ -134,7 +134,7 @@ public class InscricaoService {
         Gson gson = new Gson();
         Subscription subscription = gson.fromJson(inscricao.getInscricao(), Subscription.class);
 
-        String img = apiUrl + "arquivo/"+ chaveArquivo + ".jpg";
+        String img = apiUrl + "arquivo/" + chaveArquivo + ".jpg";
         String icon = appUrl + "assets/icons/icon-512x512.png";
         String badge = appUrl + "assets/icons/icon.svg";
 
@@ -156,10 +156,16 @@ public class InscricaoService {
                     "actions": [{ 
                         "action": "%s", 
                         "title": "%s" 
-                    }] 
+                    }], 
+                    data": {
+                       "onActionClick": {
+                         "default": {"operation": "openWindow"},
+                         "foo": {"operation": "openWindow", "url": "/animal/"},
+                       }
+                    }
                   }
                 }
-                """, titulo, mensagem, img, icon,badge, LocalDate.now(), idAnimal, acao, botaoAcao);
+                """, titulo, mensagem, img, icon, badge, LocalDate.now(), idAnimal, acao, botaoAcao);
 
         sendNotification(subscription, json);
     }
